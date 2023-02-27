@@ -3,7 +3,8 @@ import express from "express"
 const app=express();
 import {}  from "dotenv/config";
 
-
+// import your routes here
+import goalsRoutes from "./routes/goalRoutes.js"
 
 const PORT=process.env.PORT;
 
@@ -14,9 +15,11 @@ app.listen(PORT, ()=>{
 
 })
 
+
+// first route
+
+
 // first route get request
 
-app.get('/api/goals', (req, res)=>{
-    res.status(200).json({message:"Get Goals"});
-})
+app.use("/api/goals", goalsRoutes)
 
