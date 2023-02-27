@@ -2,6 +2,8 @@ console.log("hello, world");
 import express from "express"
 const app=express();
 import {}  from "dotenv/config";
+// import our middleware
+
 
 // import your routes here
 import goalsRoutes from "./routes/goalRoutes.js"
@@ -14,9 +16,11 @@ app.listen(PORT, ()=>{
     console.log("App is listening");
 
 })
+// middlewares needed
 
-
-// first route
+app.use(express.json());
+app.use(express.urlencoded({extended:false}))
+// app.use(errorHandler())
 
 
 // first route get request
