@@ -2,6 +2,9 @@ console.log("hello, world");
 import express from "express"
 const app=express();
 import {}  from "dotenv/config";
+import colors from "colors"
+
+import { connectDb } from "./config/db.js";
 // import our middleware
 
 
@@ -9,6 +12,10 @@ import {}  from "dotenv/config";
 import goalsRoutes from "./routes/goalRoutes.js"
 
 const PORT=process.env.PORT;
+
+// call our connectDB here 
+
+ connectDb();
 
 // setup our server up and running
 
