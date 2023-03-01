@@ -66,6 +66,18 @@ export const updateGoals= async (req, res)=>{
 }
 
 export const deleteGoals= async (req, res)=>{
-    res.status(200).json({msg:"delete goals"});
+    // let us delete our goals here
+
+    const goal=await Goal.findById(req.params.id);
+    if(!goal) return res.status(404).json("goal not found")
+
+// else if there is a goal we want to delete it
+
+//  OR SIMPLY USE GOALS.REMOVE()
+// goal.remove()
+
+const deleteGoal=await Goal.findByIdAndDelete(req.params.id);
+res.status(200).json(deleteGoal)
+
 }
 
