@@ -3,6 +3,7 @@ import express from "express"
 const app=express();
 import {}  from "dotenv/config";
 import colors from "colors"
+import userRoute from "./routes/userRoute.js"
 
 import { connectDb } from "./config/db.js";
 // import our middleware
@@ -33,4 +34,6 @@ app.use(express.urlencoded({extended:false}))
 // first route get request
 
 app.use("/api/goals", goalsRoutes)
+app.use("/api/users",userRoute)
+
 
