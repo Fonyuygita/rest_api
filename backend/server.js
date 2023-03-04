@@ -24,7 +24,7 @@ app.listen(PORT, ()=>{
     console.log("App is listening");
 
 })
-// middlewares needed
+// middleware needed
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}))

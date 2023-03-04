@@ -17,36 +17,31 @@ export const registerUser = asyncHandler(async (req, res) => {
       .status(400)
       .json({ success: false, msg: "not found, add or field the form" });
 
-// check if user exist
-const userExist=await User.findOne({email})
+  // check if user exist
+  const userExist = await User.findOne({ email });
 
-if(userExist) return res.status(400).json("user already exist")
+  if (userExist) return res.status(400).json("user already exist");
 
+  // now we hash our password using bcrypt
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(password, salt);
 
-// now we hash our password using bcrypt
-const salt=await bcrypt.genSalt(10);
-const hashPassword= await bcrypt.hash(password, salt)
-
-// create user
-const user=await User.create({
+  // create user
+  const user = await User.create({
     name,
     email,
-    password:hashPassword
-})
-// check if the user was created
-if(user) res.status(201).json({
-    id:user.id,
-    name:user.name,
-    email:user.email
-
-})
-
-else res.status(400).json("user was not created or invalid user data")
-
+    password: hashPassword,
+  });
+  // check if the user was created
+  if (user)
+    res.status(201).json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
+  else res.status(400).json("user was not created or invalid user data");
 
   res.json({ msg: "register user" });
-
-
 });
 
 // @desc login user
@@ -57,6 +52,20 @@ else res.status(400).json("user was not created or invalid user data")
 // async handler to handle exceptions
 
 export const loginUser = asyncHandler(async (req, res) => {
+     // get user from body
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  console.log(user);
+  // check for user-email
+
+//  const hashPassword =await bcrypt.compare(password, user.password);
+  if (user && await bcrypt.compare(password, user.password))
+    return res.status(200).json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    })
+    return res.status(400).json({error:true, msg:"invalid credentials"})
   res.json({ msg: "login user" });
 });
 
@@ -66,5 +75,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 // async handler to handle exceptions
 
 export const getMe = asyncHandler(async (req, res) => {
+ 
+
   res.json({ msg: "get user" });
 });

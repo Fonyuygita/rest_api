@@ -31,4 +31,4 @@ const userSchema=mongoose.Schema({
 
 
 // now let us export our model to use anywhere in oujr application
- export default mongoose.model('Users', userSchema);
+ export default mongoose.model('User', userSchema);
