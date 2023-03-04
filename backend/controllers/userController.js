@@ -35,9 +35,11 @@ export const registerUser = asyncHandler(async (req, res) => {
   // check if the user was created
   if (user)
     res.status(201).json({
-      id: user.id,
+      _id: user.id,
       name: user.name,
       email: user.email,
+      token:createToken=(user._id)
+
     });
   else res.status(400).json("user was not created or invalid user data");
 
@@ -61,9 +63,10 @@ export const loginUser = asyncHandler(async (req, res) => {
 //  const hashPassword =await bcrypt.compare(password, user.password);
   if (user && await bcrypt.compare(password, user.password))
     return res.status(200).json({
-      id: user.id,
+      _id: user.id,
       name: user.name,
       email: user.email,
+      token:createToken(user._id)
     })
     return res.status(400).json({error:true, msg:"invalid credentials"})
   res.json({ msg: "login user" });
@@ -79,3 +82,14 @@ export const getMe = asyncHandler(async (req, res) => {
 
   res.json({ msg: "get user" });
 });
+
+
+// create our jwt function here
+
+const createToken=(id)=>{
+
+   return jwt.sign({id} ,process.env.JWT_SECRET, {
+    expiresIn:"20d"
+   })
+
+}
