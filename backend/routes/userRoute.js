@@ -1,5 +1,7 @@
 import express from "express";
 import { registerUser,loginUser, getMe } from "../controllers/userController.js";
+// bring in our protected route middleware
+import { protect } from "../middleware/authMidleware.js";
 
 const router=express.Router();
 
@@ -7,7 +9,8 @@ const router=express.Router();
 
 router.post('/register', registerUser)
 router.post('/login', loginUser)
-router.get('/get', getMe)
+// use our protected route middleware here
+router.get('/get', protect, getMe)
 
 
 

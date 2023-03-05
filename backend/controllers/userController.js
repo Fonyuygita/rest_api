@@ -38,7 +38,7 @@ export const registerUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
-      token:createToken=(user._id)
+      token:createToken(user._id)
 
     });
   else res.status(400).json("user was not created or invalid user data");
@@ -74,7 +74,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 
 // @desc get user data user
 // @route POST /api/goals/:id
-// @access public
+// @access private
 // async handler to handle exceptions
 
 export const getMe = asyncHandler(async (req, res) => {
