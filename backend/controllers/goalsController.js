@@ -10,8 +10,9 @@ import Goal from "../model/goalModel.js"
 export const getGoals= async (req, res)=>{
 
     // get our goals through our mongoose model
+    // because we use protect middleware we have to match the id
 
-    const goals=await Goal.find({});
+    const goals=await Goal.find({user:req.user.id});
     res.status(200).json(goals)
 
 
