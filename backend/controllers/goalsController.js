@@ -3,6 +3,7 @@
 // bring in our model
 
 import Goal from "../model/goalModel.js"
+import User from "../model/userModel.js"
   // @desc get  goals
     // @route GET /api/goals/
     // @access private
@@ -36,7 +37,8 @@ export const setGoals= async (req, res)=>{
     // if no error then we want to post  our goals
 
     const goal=await Goal.create({
-        text:req.body.text
+        text:req.body.text,
+        user:req.user.id
     })
     res.json(goal);
 }
@@ -52,6 +54,23 @@ export const updateGoals= async (req, res)=>{
  if(!goal){
     res.status(400)
     throw new Error('goal not found')
+
+    // now let us make in such a way that no user wil be able to delete each other goal
+
+    // get the user id and compare it will the user id in the goal model since they relate to each other
+    const user=User.findById(req.user.id);
+
+    // first check if the user exist before comparing their ids
+    if(!user){
+        res.status(401).json('User not found');
+    }
+
+    
+    // make sure the logged in user matches the user goal using or comparing their ids
+    if(goal.user.toString()!==user.id){
+        res.status(401).json("User not authorized");
+    }
+
  }
 
  const updatedGoals=await Goal.findByIdAndUpdate(req.params.id, req.body, {
@@ -70,7 +89,20 @@ export const deleteGoals= async (req, res)=>{
     // let us delete our goals here
 
     const goal=await Goal.findById(req.params.id);
-    if(!goal) return res.status(404).json("goal not found")
+    if(!goal) return res.status(404).json("goal not found");
+
+    // get users id from the user mode and compare with that from the user id in  the goal model
+
+    const user=User.findById(req.user.id);
+
+    if(!user){
+        res.status(401).json("user not found")
+    }
+
+    // compare their ids]
+    if(goal.user.id.toString()!==user.id){
+        res.status(401).status("user not authorized");
+    }
 
 // else if there is a goal we want to delete it
 
